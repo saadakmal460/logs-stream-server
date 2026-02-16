@@ -1,0 +1,25 @@
+{
+  "name": "kafka",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:producer": "node src/producer/index.js",
+    "start:consumer": "node src/consumer/index.js",
+    "start": "concurrently --names \"PRODUCER,CONSUMER\" --prefix-colors \"bgBlue.bold,bgGreen.bold\" \"npm run start:producer\" \"npm run start:consumer\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@clickhouse/client": "^1.17.0",
+    "dotenv": "^17.3.1",
+    "fastify": "^5.7.4",
+    "fastify-plugin": "^5.1.0",
+    "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

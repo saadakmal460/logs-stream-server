@@ -1,0 +1,8 @@
+FROM clickhouse/clickhouse-server:latest
+
+# Copy the initialization SQL script into the docker-entrypoint-initdb.d directory
+# ClickHouse automatically executes .sql files in this directory on first startup
+COPY clickhouse_init.sql /docker-entrypoint-initdb.d/clickhouse_init.sql
+
+# Expose ClickHouse native and HTTP ports
+EXPOSE 8123 9000

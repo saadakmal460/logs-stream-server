@@ -1,0 +1,4 @@
+node_modules
+cluster
+.env
+src/.env
