@@ -30,6 +30,10 @@ const config = {
     port: Number(process.env.PORT || 3000),
     host: "0.0.0.0",
   },
+
+  auth: {
+    jwtSecret: process.env.JWT_SECRET || "dummy-secret-replace-me",
+  },
 };
 
 module.exports = config;

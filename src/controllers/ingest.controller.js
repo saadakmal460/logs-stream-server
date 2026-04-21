@@ -1,9 +1,26 @@
+const { randomUUID } = require("crypto");
 const producerService = require("../services/producer.service");
+
+const NO_CORRELATION_ID = "no-correlation-id";
+
+function assignCorrelationIds(body) {
+  if (!Array.isArray(body)) return;
+
+  for (const entry of body) {
+    const data = entry && entry.data;
+    if (!data) continue;
+
+    if (data.correlationId === NO_CORRELATION_ID || !data.correlationId) {
+      data.correlationId = randomUUID();
+    }
+  }
+}
 
 async function ingest(request, reply) {
   const body = request.body;
+  assignCorrelationIds(body);
   const result = await producerService.sendLogs(body);
   return reply.code(200).send(result);
 }
 
-module.exports = { ingest };
+module.exports = { ingest, assignCorrelationIds };
