@@ -8,7 +8,7 @@ function transformLog(item, log) {
     timestamp: log.timestamp,
     level: log.level,
     message: log.message,
-    component: log.loggerName,
+    loggerName: log.loggerName,
     meta: log.meta || {},
     exception: log.exception || {},
     sessionStartedAt: item.startedAt || null,

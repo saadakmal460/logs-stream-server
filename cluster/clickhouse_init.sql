@@ -8,7 +8,7 @@ CREATE TABLE logging.logs
     timestamp DateTime64(3) DEFAULT now64(3),
 
     level LowCardinality(String),
-    component LowCardinality(String),
+    loggerName LowCardinality(String),
 
     message String CODEC(ZSTD),
     meta String CODEC(ZSTD),
