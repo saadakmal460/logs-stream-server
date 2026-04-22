@@ -19,5 +19,6 @@ jobs:
           script: |
             cd ~/logs-stream-server/cluster
             git pull origin main
-            docker compose up --build -d server
-            docker image prune -f
+            docker compose stop server
+            docker compose rm -f server
+            docker compose up -d --no-deps server
