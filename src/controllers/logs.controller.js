@@ -53,7 +53,7 @@ async function listLogs(request, reply) {
       projectId AS project_name,
       '' AS environment,
       correlationId AS correlation_id,
-      component AS component,
+      loggerName AS loggerName,
       sessionStartedAt AS started_at,
       sessionEndedAt AS ended_at,
       durationMs AS duration_ms,
