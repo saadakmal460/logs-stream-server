@@ -10,3 +10,4 @@ How to start the server
 - docker exec -it kafka1 kafka-topics --create --topic logs --bootstrap-server kafka1:9092 --partitions 6 --replication-factor 3
 - Server running at 3000
 - Clickhouse at http://localhost:8123/
+- docker exec -it kafka1 kafka-topics --create --topic logs --bootstrap-server kafka1:9092 --partitions 3 --replication-factor 1

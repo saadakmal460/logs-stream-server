@@ -1,5 +1,5 @@
-const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+// const path = require("path");
+// require('dotenv').config()
 
 const { logLevel } = require("kafkajs");
 
@@ -29,6 +29,12 @@ const config = {
   server: {
     port: Number(process.env.PORT || 3000),
     host: "0.0.0.0",
+    cors: {
+      origin: ["http://localhost:4001"],
+      methods: ["GET", "POST", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+      credentials: true,
+    }
   },
 
   auth: {

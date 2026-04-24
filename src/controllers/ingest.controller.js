@@ -1,5 +1,6 @@
 const { randomUUID } = require("crypto");
 const producerService = require("../services/producer.service");
+const liveLogsProducerService = require("../services/liveLogsProducer.service");
 
 const NO_CORRELATION_ID = "no-correlation-id";
 
@@ -19,7 +20,10 @@ function assignCorrelationIds(body) {
 async function ingest(request, reply) {
   const body = request.body;
   assignCorrelationIds(body);
-  const result = await producerService.sendLogs(body);
+  const [result] = await Promise.all([
+    producerService.sendLogs(body),
+    liveLogsProducerService.publishLogs(body),
+  ]);
   return reply.code(200).send(result);
 }
 

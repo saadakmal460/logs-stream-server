@@ -3,13 +3,13 @@
  */
 function transformLog(item, log) {
   return {
-    projectId: "1",
-    correlationId: item.correlationId || null,
-    timestamp: log.timestamp,
-    level: log.level,
-    message: log.message,
-    loggerName: log.loggerName,
-    meta: log.meta || {},
+    projectId: String(log.projectId || item.projectId || "1"),
+    correlationId: item.correlationId || log.correlationId || null,
+    timestamp: log.timestamp || new Date().toISOString(),
+    level: log.level || "info",
+    message: log.message || "",
+    loggerName: log.loggerName || log.component || log.service || null,
+    meta: log.meta || log.metadata || {},
     exception: log.exception || {},
     sessionStartedAt: item.startedAt || null,
     sessionEndedAt: item.endedAt || null,
@@ -21,24 +21,35 @@ function transformLog(item, log) {
 }
 
 /**
- * Builds Kafka messages from a batch of ingest items.
+ * Builds normalized log rows from a batch of ingest items.
  */
-function buildMessages(body) {
-  const messages = [];
+function buildLogRecords(body) {
+  const records = [];
+  const items = Array.isArray(body) ? body : [];
 
-  for (const item of body) {
-    const data = item.data;
-    
+  for (const item of items) {
+    const data = item && item.data;
+    if (!data) continue;
+
     if (item.type == "session") {
-      for (const log of data.logs) {
-        messages.push({ value: JSON.stringify(transformLog(data, log)) });
+      for (const log of data.logs || []) {
+        records.push(transformLog(data, log));
       }
     } else {
-      messages.push({ value: JSON.stringify(transformLog(data, data)) });
+      records.push(transformLog(data, data));
     }
   }
 
-  return messages;
+  return records;
 }
 
-module.exports = { transformLog, buildMessages };
+/**
+ * Builds Kafka messages from a batch of ingest items.
+ */
+function buildMessages(body) {
+  return buildLogRecords(body).map((record) => ({
+    value: JSON.stringify(record),
+  }));
+}
+
+module.exports = { transformLog, buildLogRecords, buildMessages };
