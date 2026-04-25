@@ -81,6 +81,20 @@ services:
 
 
   # ─────────────────────────────────
+  # Redis (token cache)
+  # ─────────────────────────────────
+  redis:
+    image: redis:7.4-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    mem_limit: 256m
+    networks:
+      - kafka-net
+
+
+  # ─────────────────────────────────
   # Node.js Server (Producer + Consumer)
   # ─────────────────────────────────
   server:
@@ -98,6 +112,7 @@ services:
     depends_on:
       - kafka1
       - clickhouse
+      - redis
 
     restart: on-failure
 
