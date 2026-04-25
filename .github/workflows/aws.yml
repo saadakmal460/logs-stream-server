@@ -22,4 +22,4 @@ jobs:
             cd cluster
             docker compose stop server
             docker compose rm -f server
-            docker compose up -d --no-deps server
+            docker compose up -d --no-deps
