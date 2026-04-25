@@ -5,6 +5,8 @@ const errorHandler = require("./middleware/errorHandler");
 const gracefulShutdown = require("./plugins/gracefulShutdown");
 const liveLogsSocketService = require("./services/liveLogsSocket.service");
 const producerService = require("./services/producer.service");
+const mongo = require("./lib/mongo");
+const redis = require("./lib/redis");
 
 function resolveCorsOrigin(allowedOrigin, requestOrigin) {
   if (!requestOrigin) {
@@ -57,6 +59,12 @@ async function buildServer() {
   // Attach the websocket upgrade handler before the server starts listening.
   liveLogsSocketService.attach(app.server);
 
+  // Connect MongoDB
+  await mongo.connect();
+
+  // Connect Redis
+  await redis.connect();
+
   // Connect Kafka producer
   await producerService.connect();
   console.log("Kafka producer connected");
@@ -66,6 +74,8 @@ async function buildServer() {
     onShutdown: async () => {
       await liveLogsSocketService.close();
       await producerService.disconnect();
+      await redis.disconnect();
+      await mongo.disconnect();
     },
   });
 

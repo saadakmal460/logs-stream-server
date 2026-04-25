@@ -40,6 +40,16 @@ const config = {
   auth: {
     jwtSecret: process.env.JWT_SECRET || "dummy-secret-replace-me",
   },
+
+  mongo: {
+    uri: process.env.MONGO_URI,
+  },
+
+  redis: {
+    url: process.env.REDIS_URL || "redis://localhost:6379",
+    tokenTtlSeconds: 300,
+    tokenNegativeTtlSeconds: 30,
+  },
 };
 
 module.exports = config;
