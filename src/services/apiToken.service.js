@@ -13,6 +13,7 @@ function extractBearer(authHeader) {
 
 async function resolveProjectId(authHeader) {
   const rawToken = extractBearer(authHeader);
+  console.log("Extracted token: ", rawToken);
   if (!rawToken) return null;
 
   const cacheKey = CACHE_PREFIX + rawToken;

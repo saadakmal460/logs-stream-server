@@ -43,10 +43,12 @@ function assignProjectId(body, projectId) {
 }
 
 async function ingest(request, reply) {
+  console.log("Received ingest request with body");
   const projectId = await apiTokenService.resolveProjectId(
     request.headers.authorization
   );
   if (!projectId) {
+    console.log("Invalid or missing API token");
     return reply.code(401).send({ error: "Invalid or missing API token" });
   }
 
