@@ -30,7 +30,7 @@ const config = {
     port: Number(process.env.PORT || 3000),
     host: "0.0.0.0",
     cors: {
-      origin: ["http://localhost:4001"],
+      origin: ["http://localhost:4001", "https://logiscout-frontend.vercel.app"],
       methods: ["GET", "POST", "OPTIONS"],
       allowedHeaders: ["Content-Type", "Authorization"],
       credentials: true,
